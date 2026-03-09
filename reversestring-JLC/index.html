@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reverse String</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="page">
+    <h1>Reverse String</h1>
+
+    <div class="input-wrap">
+      <input
+        id="textInput"
+        type="text"
+        value="Hello, welcome to AI4Devs"
+        aria-label="Text to reverse"
+      />
+
+      <div class="actions">
+        <button id="reverseBtn" class="btn btn-primary" type="button">
+          <span>Reverse</span>
+          <span class="icon-chip" aria-hidden="true" title="Reverse">
+            <!-- refresh icon -->
+            <svg viewBox="0 0 24 24" role="img" focusable="false" aria-hidden="true">
+              <path d="M17.65 6.35A7.95 7.95 0 0 0 12 4V1L7 6l5 5V7a5 5 0 1 1-4.9 6h-2.1A7 7 0 1 0 17.65 6.35z"/>
+            </svg>
+          </span>
+        </button>
+      </div>
+
+      <div class="result" id="resultText" aria-live="polite">sveD4IA ot emoclew ,olleH</div>
+
+      <div class="copy-wrap">
+        <button id="copyBtn" class="btn btn-secondary" type="button">
+          <span>Copy</span>
+          <span class="icon-chip" aria-hidden="true" title="Copy">
+            <!-- clipboard icon -->
+            <svg viewBox="0 0 24 24" role="img" focusable="false" aria-hidden="true">
+              <path d="M16 2H8a2 2 0 0 0-2 2v2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1h2a2 2 0 0 0 2-2V8l-5-6zm-6 2h4v2h-4V4zM15 20H5V8h1v2h8V8h1v12zm4-3h-2V6h-1V4.5L19 8v9z"/>
+            </svg>
+          </span>
+        </button>
+        <div class="small-note" id="hint"></div>
+      </div>
+    </div>
+  </main>
+
+  <div class="toast" id="toast">Copied!</div>
+
+  <!-- Back-end logic (helpers) -->
+  <script src="script.js"></script>
+
+  <!-- Front-end logic (DOM wiring) -->
+  <script>
+    (function(){
+      'use strict';
+
+      const input = document.getElementById('textInput');
+      const reverseBtn = document.getElementById('reverseBtn');
+      const copyBtn = document.getElementById('copyBtn');
+      const result = document.getElementById('resultText');
+      const hint = document.getElementById('hint');
+      const toast = document.getElementById('toast');
+
+      function showToast(message){
+        toast.textContent = message;
+        toast.classList.add('show');
+        window.clearTimeout(showToast._t);
+        showToast._t = window.setTimeout(() => toast.classList.remove('show'), 1200);
+      }
+
+      function setResult(text){
+        result.textContent = text;
+        const hasText = !!text;
+        copyBtn.disabled = !hasText;
+        hint.textContent = hasText ? '' : '';
+      }
+
+      function safeReverse(){
+        const value = (input.value || '').trimEnd();
+        if (!value){
+          // Empty input: clear output and disable copy.
+          setResult('');
+          return;
+        }
+
+        try{
+          const reversed = window.ReverseStringBackend.reverseText(value);
+          setResult(reversed);
+        }catch(err){
+          // Defensive: never crash UI
+          console.error(err);
+          setResult('');
+        }
+      }
+
+      async function safeCopy(){
+        const text = result.textContent || '';
+        if (!text) return;
+
+        try{
+          const ok = await window.ReverseStringBackend.copyToClipboard(text);
+          showToast(ok ? 'Copied!' : 'Copy failed');
+        }catch(err){
+          console.error(err);
+          showToast('Copy failed');
+        }
+      }
+
+      // Events
+      reverseBtn.addEventListener('click', safeReverse);
+      copyBtn.addEventListener('click', safeCopy);
+
+      // UX: Enter reverses, Ctrl+Enter also works
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter'){
+          e.preventDefault();
+          safeReverse();
+        }
+      });
+
+      // Initialize
+      safeReverse();
+    })();
+  </script>
+</body>
+</html>

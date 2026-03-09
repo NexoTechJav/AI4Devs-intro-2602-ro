@@ -1,0 +1,134 @@
+:root{
+  --text:#212529;
+  --muted:#495057;
+  --border:#ced4da;
+  --primary:#0d6efd;
+  --secondary:#6c757d;
+  --shadow:0 0 0 0 rgba(0,0,0,0);
+}
+
+*{box-sizing:border-box;}
+
+html,body{
+  height:100%;
+}
+
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  color:var(--text);
+  background:#fff;
+}
+
+.page{
+  padding:28px 0 0 62px; /* match screenshot spacing */
+}
+
+h1{
+  margin:0 0 22px 0;
+  font-size:74px;
+  line-height:1.05;
+  font-weight:800;
+  letter-spacing:-0.5px;
+}
+
+.input-wrap{
+  width: 1120px;
+  max-width: calc(100vw - 90px);
+}
+
+#textInput{
+  width:100%;
+  height:74px;
+  border:2px solid var(--border);
+  border-radius:6px;
+  padding:0 26px;
+  font-size:34px;
+  color:var(--muted);
+  outline:none;
+}
+
+#textInput::placeholder{ color:#adb5bd; }
+
+.actions{
+  margin-top:18px;
+}
+
+.btn{
+  border:0;
+  border-radius:6px;
+  font-size:34px;
+  font-weight:700;
+  padding:14px 28px;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+}
+
+.btn:active{ transform: translateY(1px); }
+
+.btn-primary{
+  background:var(--primary);
+  color:#fff;
+}
+
+.btn-secondary{
+  background:var(--secondary);
+  color:#fff;
+}
+
+.btn[disabled]{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.icon-chip{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:38px;
+  height:38px;
+  background:#7a828a;
+  border-radius:6px;
+  box-shadow: var(--shadow);
+}
+
+.icon-chip svg{ width:22px; height:22px; fill:#fff; }
+
+.result{
+  margin-top:34px;
+  font-size:34px;
+  color:var(--text);
+}
+
+.copy-wrap{
+  margin-top:18px;
+}
+
+.small-note{
+  margin-top:10px;
+  font-size:14px;
+  color:#6c757d;
+  user-select:none;
+}
+
+.toast{
+  position:fixed;
+  left:62px;
+  bottom:22px;
+  background:#111;
+  color:#fff;
+  padding:10px 14px;
+  border-radius:10px;
+  font-size:14px;
+  opacity:0;
+  transform: translateY(8px);
+  transition: opacity .18s ease, transform .18s ease;
+  pointer-events:none;
+}
+
+.toast.show{
+  opacity:.9;
+  transform: translateY(0);
+}
